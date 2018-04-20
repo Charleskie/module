@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="piggybank">
+    <CLASSES>
+      <root url="jar://E:/Portable/sibat/jars/piggybank.jar!/" />
+      <root url="file://E:/Portable/sibat/jars" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://E:/Portable/sibat/jars" />
+    </SOURCES>
+    <jarDirectory url="file://E:/Portable/sibat/jars" recursive="false" />
+    <jarDirectory url="file://E:/Portable/sibat/jars" recursive="false" type="SOURCES" />
+  </library>
+</component>

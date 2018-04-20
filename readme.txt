@@ -1,0 +1,2 @@
+职住标签算法的模块化部署请查看sh文件夹下的两个文件，MarkHomeWork输出可以标记职住标签的站点，
+MarkHomeWork的输出即是OutHomeWork的输入，OutHomeWork无需配制输入路径，

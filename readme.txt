@@ -1,5 +1,5 @@
 职住标签算法的模块化部署请查看sh文件夹下的两个文件，MarkHomeWork输出可以标记职住标签的站点，
 MarkHomeWork的输出即是OutHomeWork的输入，OutHomeWork无需配制输入路径
 
-本项目主要涉及职住标签算法（HomeandWork），公安数据接入特征分析（gongan），地铁客流统计（junbo）
-其中涉及其他一些测试调试的输出，和利用GPS进行站点聚类和距离计算的算法
+本项目主要涉及职住标签算法（HomeandWork），公安数据接入特征分析（gongan），地铁客流统计（junbo），公交BusO（traffic）
+其中涉及其他一些测试调试的输出，和利用GPS进行站点聚类和距离计算的算法（wangsheng/StationCluster）

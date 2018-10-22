@@ -33,8 +33,7 @@ object OutHomeWork {
       }).filter(_.count > 10).map(_.toString.split(",")).map(s => home(s(0), s(1), s(2), s(3).toDouble, s(4).toDouble, s(5).toInt))
       data_order
     }
-
-    /** *
+    /***
       *
       * @param workcal
       * @return

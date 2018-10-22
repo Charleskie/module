@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="SBT: javax.annotation:javax.annotation-api:1.2:jar">
+  <library name="sbt: javax.annotation:javax.annotation-api:1.2:jar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.ivy2/cache/javax.annotation/javax.annotation-api/jars/javax.annotation-api-1.2.jar!/" />
     </CLASSES>

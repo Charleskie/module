@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="SBT: xmlenc:xmlenc:0.52:jar">
+  <library name="sbt: xmlenc:xmlenc:0.52:jar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.ivy2/cache/xmlenc/xmlenc/jars/xmlenc-0.52.jar!/" />
     </CLASSES>

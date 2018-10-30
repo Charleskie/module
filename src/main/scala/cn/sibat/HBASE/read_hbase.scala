@@ -82,11 +82,12 @@ object read_hbase{
     data.coalesce(10).saveAsTextFile(outPath)
     //    getData(data).coalesce(1).saveAsTextFile(outPath)
   }
+  case class ZHX1(cardId:String,date:String,time:String,lat:Double,lon:Double){
+    override def toString: String = Array(cardId,date,time,lat,lon).mkString(",")
+  }
 
 }
 
-case class ZHX1(cardId:String,date:String,time:String,lat:Double,lon:Double){
-  override def toString: String = Array(cardId,date,time,lat,lon).mkString(",")
-}
+
 
 

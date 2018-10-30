@@ -1,4 +1,4 @@
-[info] Updating {file:/H:/Portable/spark/module/project/}module-build...
+[info] Updating {file:/F:/sibat/code/spark/module/project/}module-build...
 [debug] :: resolving dependencies :: default#module-build;0.1-SNAPSHOT
 [debug] 	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool]
 [debug] 	validate = true
@@ -6009,19 +6009,19 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#template-resolver;0.1!template-resolver.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#jline;2.10.6!jline.jar
 [debug] 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar
-[debug] :: resolution report :: resolve 3813ms :: artifacts dl 78ms
-[debug] 	report for default#module-build;0.1-SNAPSHOT compile produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-compile.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT runtime produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-runtime.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT test produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-test.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT provided produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-provided.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT optional produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-optional.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT compile-internal produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-compile-internal.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT runtime-internal produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-runtime-internal.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT test-internal produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-test-internal.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT plugin produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-plugin.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT sources produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-sources.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT docs produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-docs.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT pom produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-pom.xml
-[debug] 	report for default#module-build;0.1-SNAPSHOT scala-tool produced in H:\Portable\spark\module\project\target\resolution-cache\reports\default-module-build-scala-tool.xml
-[debug] 	resolve done (3813ms resolve - 78ms download)
+[debug] :: resolution report :: resolve 930ms :: artifacts dl 31ms
+[debug] 	report for default#module-build;0.1-SNAPSHOT compile produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-compile.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT runtime produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-runtime.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT test produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-test.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT provided produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-provided.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT optional produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-optional.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT compile-internal produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-compile-internal.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT runtime-internal produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-runtime-internal.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT test-internal produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-test-internal.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT plugin produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-plugin.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT sources produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-sources.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT docs produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-docs.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT pom produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-pom.xml
+[debug] 	report for default#module-build;0.1-SNAPSHOT scala-tool produced in F:\sibat\code\spark\module\project\target\resolution-cache\reports\default-module-build-scala-tool.xml
+[debug] 	resolve done (930ms resolve - 31ms download)
 [info] Done updating.

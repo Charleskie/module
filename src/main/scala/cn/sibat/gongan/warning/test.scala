@@ -3,6 +3,7 @@ package cn.sibat.gongan.warning
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import org.apache.spark.sql.{SQLContext, SparkSession}
+import cn.sibat.gongan.warning.earlywarning.string2time
 
 object test {
   def main(args: Array[String]): Unit = {

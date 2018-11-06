@@ -8,19 +8,24 @@ import org.apache.spark.sql.{SQLContext, SparkSession}
 
 object earlywarning{
   private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\"
+  private val day = "1106"
+  private val Months:Array[String] = Array("11")
+  private val DATE:Array[String] = Array("04","05")
   def main(args: Array[String]): Unit = {
     val sparkSession = SparkSession.builder().master("local[*]").getOrCreate()
     val sc = sparkSession.sparkContext
-    val data =   sparkSession.sparkContext.hadoopFile[LongWritable,Text,TextInputFormat](path+"early_warning1101.txt")
-      .map(p=> new String(p._2.getBytes,0,p._2.getLength,"GBK"))
+    val data =   sparkSession.sparkContext.hadoopFile[LongWritable,Text,TextInputFormat](path+"early_warning1106.txt")
+      .map(p=> new String(p._2.getBytes,0,p._2.getLength,"GBK")).filter(s => Months.contains(string2time(s.split(","){12}).substring(5,7)))
+      .filter(s => DATE.contains(string2time(s.split(","){12}).substring(8,10)))
+      .map(s => s)
 
 //    val date = sparkSession.read.textFile(path+"early_warning1029.xls").rdd.foreach(println)
 
 //    data.foreach(println)
-//    calDayCount(data)
-//    calHourCount(data)
-//    calStationCount(data)
-//    calTypeCount(data)
+    calDayCount(data)
+    calHourCount(data)
+    calStationCount(data)
+    calTypeCount(data)
     calSimilarityCount(data)
 
   }
@@ -33,14 +38,18 @@ object earlywarning{
     rdd.map(s => {
       val line = s.split(",")
       (line(0),string2time(line(12)).substring(0,10))
-    }).groupBy(s => s._2).map(s => s._1+","+s._2.size).coalesce(1).saveAsTextFile(path+"out/dayCount")
+    }).groupBy(s => s._2).map(s => s._1+","+s._2.size)
+      .foreach(println)
+//      .coalesce(1).saveAsTextFile(path+"out/dayCount"+day)
   }
 
   def calHourCount(rdd: RDD[String]):Unit ={
     rdd.map(s=> {
       val line = s.split(",")
       (line(0),string2time(line(12)).substring(10,13))
-    }).groupBy(s=> s._2).map(s=> s._1+","+s._2.size).coalesce(1).saveAsTextFile(path+"out/hourCount")
+    }).groupBy(s=> s._2).map(s=> s._1+","+s._2.size)
+      .foreach(println)
+//      .coalesce(1).saveAsTextFile(path+"out/hourCount"+day)
   }
 
   /***
@@ -64,7 +73,9 @@ object earlywarning{
     rdd.map(s =>{
       val ss = s.split(",")
       (ss(0),ss(9))
-    }).groupBy(s=>s._2).map(s=> s._1+","+s._2.size).coalesce(1).saveAsTextFile(path+"out/stationCount")
+    }).groupBy(s=>s._2).map(s=> s._1+","+s._2.size)
+      .foreach(println)
+//      .coalesce(1).saveAsTextFile(path+"out/stationCount"+day)
   }
 
   def calTypeCount(rdd: RDD[String]): Unit ={
@@ -75,7 +86,9 @@ object earlywarning{
       val line = s.replaceAll("\\(","").replaceAll("\\)","").split(",")
       val sum = line.size
       line(0)+","+line(1)+","+line(2)+","+line(2).toDouble/sum
-    }).coalesce(1).saveAsTextFile(path+"out/typecount")
+    })
+      .foreach(println)
+//      .coalesce(1).saveAsTextFile(path+"out/typecount"+day)
   }
 
   def calSimilarityCount(rdd: RDD[String]):Unit={

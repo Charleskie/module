@@ -7,13 +7,15 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, SparkSession}
 
 object earlywarning{
-  private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\"
+//  private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\"
+  private val path = "C:\\Users\\administer\\Desktop\\Kim1023\\"
   private val day = "1107"
   private val Months:Array[String] = Array("08","09","10","11")
   private val DATE:Array[String] = Array("07/29","07/30","07/31","08/01")
   def main(args: Array[String]): Unit = {
     val sparkSession = SparkSession.builder().master("local[*]").getOrCreate()
     val sc = sparkSession.sparkContext
+//    private val
 //    val data =  sparkSession.sparkContext.hadoopFile[LongWritable,Text,TextInputFormat](path+"early_warning1107.txt")
 //      .map(p=> new String(p._2.getBytes,0,p._2.getLength,"GBK"))
       val data = sparkSession.sparkContext.textFile(path+"early_warning1107.txt")
@@ -29,8 +31,12 @@ object earlywarning{
 //    calStationCount(data)
 //    calTypeCount(data)
 //    calSimilarityCount(data)
-    calStationCountDist(data)
+//    calStationCountDist(data)
 //    calTrail(data)
+
+    val police_station = sparkSession.sparkContext.textFile(path+"police_station.csv")
+
+    calOfficeCount(data,police_station)
 
   }
 
@@ -136,6 +142,43 @@ object earlywarning{
     }).map(_.replaceAll("\\(","")).map(_.replaceAll("\\)",""))
 //      .foreach(println)
       .coalesce(1).saveAsTextFile(path+"out/"+day+"/trail")
+  }
+
+  def calOfficeCount(rdd:RDD[String],office:RDD[String]): Unit ={
+    val office_station = office.map(s =>{
+      val line = s.split(",")
+      val police_station = line(1)
+      val station_name = line(3)
+      (station_name,police_station)
+    })
+    val data = rdd.map(s=>{
+      val line = s.split(",")
+      val person_id = line(5)
+      val station_name = line(9)
+      (station_name,person_id)
+    }).join(office_station,2).map(s => {
+      val station_name = s._1
+      val police_station = s._2._2
+      val persion_id = s._2._1
+      (police_station,persion_id,station_name)
+    }).groupBy(s => s._1+","+s._2).map(s =>{
+      val station_names = s._2.map(_._3).mkString(";")
+      val ss = s._1.replaceAll("\\(","").replaceAll("\\)","")
+      ss+","+station_names
+    })
+    //派出所分组
+    data.saveAsTextFile(path+"out/"+day+"/office")
+    //出现在多个派出所的人员标记
+    data.map(s =>{
+      val line = s.split(",")
+      val police_station = line(0)
+      val person_id = s(1)
+      (person_id,police_station)
+    }).groupBy(s => s._1).map(s => {
+      val police_stations = s._2.map(_._2).mkString(";")
+      s._1+","+police_stations
+    }).saveAsTextFile(path+"out/"+day+"/office_important")
+
   }
 
   case class earlywarning(id: String, device_id: String, device_type:String, device_address:String, data_sources:String ,

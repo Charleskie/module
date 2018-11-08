@@ -7,8 +7,8 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, SparkSession}
 
 object earlywarning{
-//  private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\"
-  private val path = "C:\\Users\\administer\\Desktop\\Kim1023\\"
+  private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\"
+//  private val path = "C:\\Users\\administer\\Desktop\\Kim1023\\"
   private val day = "1107"
   private val Months:Array[String] = Array("08","09","10","11")
   private val DATE:Array[String] = Array("07/29","07/30","07/31","08/01")
@@ -36,7 +36,8 @@ object earlywarning{
 
     val police_station = sparkSession.sparkContext.textFile(path+"police_station.csv")
 
-    calOfficeCount(data,police_station)
+//    calOfficeCount(data,police_station)
+    calFlow(data)
 
   }
 
@@ -162,23 +163,44 @@ object earlywarning{
       val persion_id = s._2._1
       (police_station,persion_id,station_name)
     }).groupBy(s => s._1+","+s._2).map(s =>{
-      val station_names = s._2.map(_._3).mkString(";")
+      val sum = s._2.map(_._3).size
+      val station_names = s._2.map(_._3).toArray.distinct.mkString(";")
       val ss = s._1.replaceAll("\\(","").replaceAll("\\)","")
-      ss+","+station_names
+      ss+","+station_names+","+sum
     })
     //派出所分组
-    data.saveAsTextFile(path+"out/"+day+"/office")
+    data.coalesce(1).saveAsTextFile(path+"out/"+day+"/office")
     //出现在多个派出所的人员标记
     data.map(s =>{
       val line = s.split(",")
       val police_station = line(0)
-      val person_id = s(1)
+      val person_id = line(1)
       (person_id,police_station)
     }).groupBy(s => s._1).map(s => {
-      val police_stations = s._2.map(_._2).mkString(";")
-      s._1+","+police_stations
-    }).saveAsTextFile(path+"out/"+day+"/office_important")
+      val sum = s._2.map(_._2).toArray.distinct.length
+      val police_stations = s._2.map(_._2).toArray.distinct.mkString(";")
+      s._1+","+police_stations+","+sum
+    }).coalesce(1).saveAsTextFile(path+"out/"+day+"/office_important")
 
+  }
+
+  def calFlow(rdd:RDD[String]): Unit={
+    rdd.filter(s => s.split(","){12}.substring(0,4)=="2018").map(s =>{
+      val line = s.split(",")
+      val card_id = line(0)
+      val day = line(1).substring(0,8)
+      val hour = line(1).substring(10,12)
+      (card_id,hour,day)
+    }).groupBy(s => s._2+","+s._3).map(s =>{
+      val hourCount = s._2.map(_._1).size
+      val hour = s._1.split(","){0}
+      (hour,hourCount)
+    }).groupBy(_._1).map(s =>{
+      val hourArray = s._2.map(_._2.toDouble).toArray
+      val avg = hourArray.sum/hourArray.length
+      val hour = s._1
+      hour+","+avg.toInt
+    }).coalesce(1).saveAsTextFile(path+"out/"+day+"/flow")
   }
 
   case class earlywarning(id: String, device_id: String, device_type:String, device_address:String, data_sources:String ,

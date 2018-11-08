@@ -29,7 +29,10 @@ object test{
     cal.setTime(newfor.parse(newfor.format(datafor.parse(time))))
     print(newfor.format(datafor.parse(time)))
     println(Integer.parseInt(new java.text.DecimalFormat("0").format(0.69)))
-    println(datafor.format(time))
+//    println(datafor.format(time))
+
+    val arr = Array(4,4,10)
+    println(arr.sum/arr.size)
   }
   def fs(s:String,d:String)={
     if(s.length>d.length){

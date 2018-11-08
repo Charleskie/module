@@ -1,9 +1,9 @@
-package Cal_public_transit.Bus
+package cn.sibat.traffic
 
 import java.sql.{Connection, DriverManager, SQLException}
 import java.text.SimpleDateFormat
 
-import Cal_public_transit.Bus.BusClean.{BusDeal, BusO, BusStationGPS}
+import cn.sibat.traffic.BusClean.{BusDeal, BusO, BusStationGPS}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.joda.time.DateTime

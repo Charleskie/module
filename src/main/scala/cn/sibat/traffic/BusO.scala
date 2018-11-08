@@ -1,5 +1,6 @@
-import java.io.IOException
+package cn.sibat.traffic
 
+import java.io.IOException
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 

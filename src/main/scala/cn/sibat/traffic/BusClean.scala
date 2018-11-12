@@ -3,7 +3,7 @@ package cn.sibat.traffic
 import java.sql.{Connection, DriverManager, SQLException}
 import java.text.SimpleDateFormat
 
-import cn.sibat.traffic.BusClean.{BusDeal, BusO, BusStationGPS}
+//import cn.sibat.traffic.BusClean.{BusDeal, BusO, BusStationGPS}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.joda.time.DateTime
@@ -182,12 +182,21 @@ class BusClean extends Serializable{
           }
         }
         if(get_stationInfo != null){
-          val out = BusO(temp.card_id,temp.deal_time,get_stationInfo.line,get_stationInfo.car_id,get_stationInfo.direction,get_stationInfo.devide,get_stationInfo.station_id,
-            get_stationInfo.station_name,get_stationInfo.index,get_stationInfo.lon,get_stationInfo.lat,get_stationInfo.time,varTimeDiff)
+          val out = BusO(temp.card_id,temp.deal_time,get_stationInfo.line,get_stationInfo.car_id,get_stationInfo.direction,
+            get_stationInfo.devide,get_stationInfo.station_id, get_stationInfo.station_name,get_stationInfo.index,
+            get_stationInfo.lon,get_stationInfo.lat,get_stationInfo.time,varTimeDiff)
           outSet.add(out)}
       }
       outSet
     }).distinct()
+  }
+
+  case class BusDeal(card_id:String,car_id:String,deal_time:String)
+  case class BusStationGPS(car_id:String,time:String,line:String,direction:String,devide:String,station_id:String,station_name:String,index:Int,lon:Double,lat:Double)
+  case class BusO(card_id:String,time:String,line:String,car_id:String,direction:String,devide:String,station_id:String,station_name:String,index:Int
+                  ,lon:Double,lat:Double,station_time:String,timediff:Long){
+    override def toString: String = Array(card_id,time,line,car_id,direction,devide,station_id,station_name,index.toString,
+      lon.toString,lat.toString,station_time,timediff.toString).mkString(",")
   }
 }
 
@@ -223,11 +232,5 @@ object BusClean{
     val joined = grpDeal.join(grpGPS).count()
     println("交易数据原始："+DealRDD_o+","+grpDeal_count+"GPS数据原始："+GPSRDD_o+","+grpGPS_count+"Join数量："+joined)
   }
-  case class BusDeal(card_id:String,car_id:String,deal_time:String)
-  case class BusStationGPS(car_id:String,time:String,line:String,direction:String,devide:String,station_id:String,station_name:String,index:Int,lon:Double,lat:Double)
-  case class BusO(card_id:String,time:String,line:String,car_id:String,direction:String,devide:String,station_id:String,station_name:String,index:Int
-                  ,lon:Double,lat:Double,station_time:String,timediff:Long){
-    override def toString: String = Array(card_id,time,line,car_id,direction,devide,station_id,station_name,index.toString,
-      lon.toString,lat.toString,station_time,timediff.toString).mkString(",")
-  }
+
 }

@@ -3,7 +3,7 @@ package cn.sibat.traffic
 import java.sql.{Connection, DriverManager, SQLException}
 import java.text.SimpleDateFormat
 
-import cn.sibat.traffic.BusOCal.{BusDeal, BusO, BusStationGPS}
+//import cn.sibat.traffic.{BusDeal, BusO, BusStationGPS}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.joda.time.DateTime
@@ -188,6 +188,13 @@ class BusOCal extends Serializable{
       outSet
     }).distinct()
   }
+  case class BusDeal(card_id:String,car_id:String,deal_time:String)
+  case class BusStationGPS(car_id:String,time:String,line:String,direction:String,devide:String,station_id:String,station_name:String,index:Int,lon:Double,lat:Double)
+  case class BusO(card_id:String,time:String,line:String,car_id:String,direction:String,devide:String,station_id:String,station_name:String,index:Int
+                  ,lon:Double,lat:Double,station_time:String,timediff:Long){
+    override def toString: String = Array(card_id,time,line,car_id,direction,devide,station_id,station_name,index.toString,
+      lon.toString,lat.toString,station_time,timediff.toString).mkString(",")
+  }
 }
 
 
@@ -223,13 +230,6 @@ object BusOCal{
     val grpGPS_count = grpGPS.count()
     val joined = grpDeal.join(grpGPS).count()
 //    println("交易数据原始："+DealRDD_o+","+grpDeal_count+"GPS数据原始："+GPSRDD_o+","+grpGPS_count+"Join数量："+joined)
-  }
-  case class BusDeal(card_id:String,car_id:String,deal_time:String)
-  case class BusStationGPS(car_id:String,time:String,line:String,direction:String,devide:String,station_id:String,station_name:String,index:Int,lon:Double,lat:Double)
-  case class BusO(card_id:String,time:String,line:String,car_id:String,direction:String,devide:String,station_id:String,station_name:String,index:Int
-                  ,lon:Double,lat:Double,station_time:String,timediff:Long){
-    override def toString: String = Array(card_id,time,line,car_id,direction,devide,station_id,station_name,index.toString,
-      lon.toString,lat.toString,station_time,timediff.toString).mkString(",")
   }
   //交易数据原始：3552064,15388GPS数据原始：4932979,12069Join数量：11791
 }

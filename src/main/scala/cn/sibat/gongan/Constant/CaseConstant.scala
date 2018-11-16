@@ -6,10 +6,11 @@ object CaseConstant{
     *预警数据表模式case
     */
   case class warning(id:String,device_id:String,device_type:String,device_address:String,data_sources:String,
-                   keyperson_id:String,keyperson_state:String,keyperson_type:String,event_address_id:String,
-                   event_address_name:String,event_status:String,compare_sources:String,create_time:String,
-                   update_time:String,convictions:String,job_name:String,name:String,pid:String,taskid:String,
-                   similarity:String,position:String,data_device_type:String)
+                     keyperson_id:String,keyperson_state:String,keyperson_type:String,event_address_id:String,
+                     event_address_name:String,event_status:String,compare_sources:String,image_path:String,
+                     reserve:String,reserve2:String,create_time:String,update_time:String,reserve3:String,
+                     convictions:String,job_name:String,name:String,pid:String,taskid:String,similarity:String,
+                     position:String,data_device_type:String)
 
   /***
     * 撤控数据表模式case
@@ -36,4 +37,6 @@ object CaseConstant{
                             tary_lxfs:String,tary_name:String,tary_qt:String,id:String,datasource:String,
                             is_delete:String,create_user:String,submit_user:String,juris_category:String,
                             person_descript:String)
+
+
 }

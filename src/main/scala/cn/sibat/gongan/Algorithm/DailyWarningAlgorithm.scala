@@ -33,4 +33,9 @@ object DailyWarningAlgorithm{
       .join(office_data,"station_name").show(10)
 
   }
+
+
+  def calTimeDiffCatch(warning_data:DataFrame,keyperson_base:DataFrame,examination:DataFrame): Unit ={
+    warning_data.join(keyperson_base,col(""))
+  }
 }

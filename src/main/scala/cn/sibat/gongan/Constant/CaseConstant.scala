@@ -5,7 +5,7 @@ object CaseConstant{
   /***
     *预警数据表模式case
     */
-  case class warning(id:String,device_id:String,device_type:String,device_address:String,data_sources:String,
+  case class warningdata(id:String,device_id:String,device_type:String,device_address:String,data_sources:String,
                      keyperson_id:String,keyperson_state:String,keyperson_type:String,event_address_id:String,
                      event_address_name:String,event_status:String,compare_sources:String,image_path:String,
                      reserve:String,reserve2:String,create_time:String,update_time:String,reserve3:String,

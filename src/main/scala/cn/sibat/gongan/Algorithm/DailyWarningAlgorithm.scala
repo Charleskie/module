@@ -36,6 +36,13 @@ object DailyWarningAlgorithm{
 
 
   def calTimeDiffCatch(warning_data:DataFrame,keyperson_base:DataFrame,examination:DataFrame): Unit ={
-    warning_data.join(keyperson_base,col(""))
+    warning_data.join(examination,col("id")===col("early_warning_id"))
+      .filter(col("examination_approval_type")==="已撤控"&&col("avaliable")==="1")
+      .select("keyperson_id","update_time","pid").distinct()
+      .join(keyperson_base,col("pid")===col("id"))
+      .select("keyperson_id","create_time","update_time")
+      .withColumn("start_time",timeToUnix(col("create_time")))
+      .withColumn("timediff",timediff(col("start_time"),col("update_time")))
+      .select("keyperson_id","update_time","timediff").show()
   }
 }

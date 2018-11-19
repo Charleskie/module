@@ -6,12 +6,12 @@ import org.apache.spark.sql.functions.col
 
 object DailyWarningAlgorithm{
 
-  def calDayDataCount(sparkSession: SparkSession,dataFrame: DataFrame,date:String){
-    val data = dataFrame.withColumn("date",time(col("create_time")).substr(0,10))
-      .filter(col("date")===date)
+  def calDayDataCount(sparkSession: SparkSession,data: DataFrame){
+//    val data = dataFrame.withColumn("date",timeParse(col("create_time")).substr(0,10))
+//      .filter(col("date")===date)
 
     val datacount = data.groupBy("keyperson_type","date").count()
-      .toDF("keyperson_type","date","count").show(10)
+      .toDF("keyperson_type","date","count")
 
     val peoplecnt = data.select("keyperson_id","keyperson_type","date").distinct()
       .groupBy("keyperson_type","date")
@@ -21,7 +21,7 @@ object DailyWarningAlgorithm{
       .groupBy("event_address_name","date")
       .count().toDF("event_address_name","date","count")
 
-    val hourcount = data.withColumn("hour",time(col("create_time")).substr(10,2))
+    val hourcount = data.withColumn("hour",timeParse(col("create_time")).substr(12,2))
       .select("date","hour").groupBy("date","hour").count()
       .toDF("date","hour","count")
   }
@@ -29,8 +29,9 @@ object DailyWarningAlgorithm{
   def calOfficeCount(office_data: DataFrame,warning_data: DataFrame): Unit ={
     warning_data.select("keyperson_id","event_address_name","create_time")
       .toDF("keyperson_id","station_name","create_time")
-      .withColumn("date",time(col("create_time")).substr(0,10))
-      .join(office_data,"station_name").show(10)
+      .withColumn("date",timeParse(col("create_time")).substr(0,10))
+      .join(office_data,"station_name")
+      .select("date","police_station","keyperson_id","station_name")
 
   }
 
@@ -41,8 +42,8 @@ object DailyWarningAlgorithm{
       .select("keyperson_id","update_time","pid").distinct()
       .join(keyperson_base,col("pid")===col("id"))
       .select("keyperson_id","create_time","update_time")
-      .withColumn("start_time",timeToUnix(col("create_time")))
-      .withColumn("timediff",timediff(col("start_time"),col("update_time")))
-      .select("keyperson_id","update_time","timediff").show()
+      .withColumn("timediff",timediff(timeToUnix(col("create_time")),col("update_time")))
+      .withColumn("date",UnixParse(col("update_time")).substr(1,10))
+      .select("date","keyperson_id","timediff")
   }
 }

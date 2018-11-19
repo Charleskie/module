@@ -10,28 +10,29 @@ object DailyWarningAlgorithm{
 //    val data = dataFrame.withColumn("date",timeParse(col("create_time")).substr(0,10))
 //      .filter(col("date")===date)
 
-    val datacount = data.groupBy("keyperson_type","date").count()
-      .toDF("keyperson_type","date","count")
+    val datacount = data.groupBy("keyperson_type","warning_date").count()
+      .toDF("keyperson_type","warning_date","warning_count")
 
-    val peoplecnt = data.select("keyperson_id","keyperson_type","date").distinct()
-      .groupBy("keyperson_type","date")
-      .count().toDF("keyperson_type","date","count")
+    val peoplecnt = data.select("keyperson_id","keyperson_type","warning_date").distinct()
+      .groupBy("keyperson_type","warning_date")
+      .count().toDF("keyperson_type","warning_date","warning_count")
 
-    val stationcnt = data.select("event_address_name","date")
-      .groupBy("event_address_name","date")
-      .count().toDF("event_address_name","date","count")
+    val stationcnt = data.select("event_address_name","warning_date")
+      .groupBy("event_address_name","warning_date")
+      .count().toDF("event_address_name","warning_date","warning_count")
 
-    val hourcount = data.withColumn("hour",timeParse(col("create_time")).substr(12,2))
-      .select("date","hour").groupBy("date","hour").count()
-      .toDF("date","hour","count")
+    val hourcount = data.withColumn("warning_hour",timeParse(col("create_time"))
+      .substr(12,2)).select("warning_date","warning_hour")
+      .groupBy("warning_date","warning_hour").count()
+      .toDF("warning_date","warning_hour","warning_count")
   }
 
   def calOfficeCount(office_data: DataFrame,warning_data: DataFrame): Unit ={
     warning_data.select("keyperson_id","event_address_name","create_time")
       .toDF("keyperson_id","station_name","create_time")
-      .withColumn("date",timeParse(col("create_time")).substr(0,10))
+      .withColumn("warning_date",timeParse(col("create_time")).substr(0,10))
       .join(office_data,"station_name")
-      .select("date","police_station","keyperson_id","station_name")
+      .select("warning_date","police_station","keyperson_id","station_name")
 
   }
 
@@ -42,8 +43,9 @@ object DailyWarningAlgorithm{
       .select("keyperson_id","update_time","pid").distinct()
       .join(keyperson_base,col("pid")===col("id"))
       .select("keyperson_id","create_time","update_time")
-      .withColumn("timediff",timediff(timeToUnix(col("create_time")),col("update_time")))
-      .withColumn("date",UnixParse(col("update_time")).substr(1,10))
-      .select("date","keyperson_id","timediff")
+      .withColumn("arrest_time_diff",timediff(timeToUnix(col("create_time"))
+        ,col("update_time")))
+      .withColumn("warning_date",UnixParse(col("update_time")).substr(1,10))
+      .select("warning_date","keyperson_id","timediff")
   }
 }

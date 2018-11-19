@@ -31,7 +31,7 @@ create table warning_police_station_count(
 create table warning_station_count(
   id int not null AUTO_INCREMENT,
   warning_date varchar, --预警日期
-  station_name varchar,  --站点
+  event_address_name varchar,  --站点
   warning_count int,  --预警次数
   primary key(id)
 );

@@ -7,19 +7,21 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, SparkSession}
 
 object earlywarning{
-  private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\"
+  private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\data\\"
 //  private val path = "C:\\Users\\administer\\Desktop\\Kim1023\\"
-  private val day = "1112"
-  private val Months:Array[String] = Array("08","09","10","11")
-  private val DATE:Array[String] = Array("07/29","07/30","07/31","08/01")
+  private val day = "1119"
+  private val Months:Array[String] = Array("11")
+  private val DATE:Array[String] = Array("11/13","11/12","11/14","11/15","11/16","11/17","11/18")
   def main(args: Array[String]): Unit = {
     val sparkSession = SparkSession.builder().master("local[*]").getOrCreate()
     val sc = sparkSession.sparkContext
 //    private val
 //    val data =  sparkSession.sparkContext.hadoopFile[LongWritable,Text,TextInputFormat](path+"early_warning1107.txt")
 //      .map(p=> new String(p._2.getBytes,0,p._2.getLength,"GBK"))
-      val data = sparkSession.sparkContext.textFile(path+"early_warning"+day+".txt")
-      .filter(s => Months.contains(string2time(s.split(","){12}).substring(5,7))||DATE.contains(string2time(s.split(","){12}).substring(5,10)))
+
+    val data = sparkSession.sparkContext.textFile(path+"early_warning"+day+".txt")
+      .filter(s => Months.contains(string2time(s.split(","){15}).substring(5,7)))
+      .filter(s => DATE.contains(string2time(s.split(","){15}).substring(5,10)))
 //      .filter(s => DATE.contains(string2time(s.split(","){12}).substring(5,10)))
       .map(s => s)
 
@@ -30,21 +32,20 @@ object earlywarning{
 //    calHourCount(data)
 //    calStationCount(data)
 //    calTypeCount(data)
-    calSimilarityCount(data)
+//    calSimilarityCount(data)
 //    calStationCountDist(data)
 //    calTrail(data)
-//    calSum(data)
+    calSum(data)
 
     val police_station = sparkSession.sparkContext.textFile(path+"police_station.csv")
 
-//    calOfficeCount(data,police_station)
+    calOfficeCount(data,police_station)
 //    calFlow(data)
 
   }
 
   def calSum(rdd: RDD[String])={
     println(rdd.count())
-
     println(rdd.filter(s => s.split(","){6}=="立即处置").count())
   }
 
@@ -55,7 +56,7 @@ object earlywarning{
   def calDayCount(rdd: RDD[String]): Unit ={
     rdd.map(s => {
       val line = s.split(",")
-      (line(0),string2time(line(12)).substring(0,10))
+      (line(0),string2time(line(15)).substring(0,10))
     }).groupBy(s => s._2).map(s => s._1+","+s._2.size)
 //      .foreach(println)
       .coalesce(1).saveAsTextFile(path+"out/"+day+"/dayCount")
@@ -64,7 +65,7 @@ object earlywarning{
   def calHourCount(rdd: RDD[String]):Unit ={
     rdd.map(s=> {
       val line = s.split(",")
-      (line(0),string2time(line(12)).substring(10,13))
+      (line(0),string2time(line(15)).substring(10,13))
     }).groupBy(s=> s._2).map(s=> s._1+","+s._2.size)
 //      .foreach(println)
       .coalesce(1).saveAsTextFile(path+"out/"+day+"/hourCount")

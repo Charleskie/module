@@ -2,8 +2,6 @@ package cn.sibat.gongan.UDF
 
 import java.text.SimpleDateFormat
 import java.util.Date
-
-import org.apache.spark.sql.catalyst.expressions.UnixTimestamp
 import org.apache.spark.sql.functions.udf
 
 object TimeFormat{

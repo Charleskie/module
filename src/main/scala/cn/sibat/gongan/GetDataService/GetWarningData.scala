@@ -12,8 +12,8 @@ object GetWarningData{
     * @return
     */
   def getPoliceStation(sparkSession: SparkSession,path:String): DataFrame ={
-    sparkSession.sqlContext.read.csv(path).toDF("id","police_station","depart_id","station_name")
-      .select("police_station","station_name").distinct()
+    sparkSession.sqlContext.read.csv(path).toDF("id","police_station","depart_id","event_address_name")
+      .select("police_station","event_address_name").distinct()
   }
 
 

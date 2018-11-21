@@ -40,9 +40,10 @@ object DailyWarningAlgorithm{
     * @return
     */
   def calOfficeCount(office_data: DataFrame,warning_data: DataFrame): DataFrame ={
+    val office = office_data.toDF("police_station","event_address_name")
     warning_data.select("keyperson_id","event_address_name","create_time")
       .withColumn("warning_date",timeParse(col("create_time")).substr(0,10))
-      .join(office_data,"event_address_name")
+      .join(office,"event_address_name")
       .select("warning_date","police_station","keyperson_id","event_address_name")
   }
 

@@ -48,7 +48,7 @@ object daily{
     val dateNow = new Date()
     val calender = Calendar.getInstance()
     calender.setTime(dateNow)
-    calender.add(Calendar.DAY_OF_MONTH,-5)
+    calender.add(Calendar.DAY_OF_MONTH,-20)
     val day = newFormat.format(calender.getTime).substring(0,10)
     val early_warning = early_warningAll.filter(col("warning_date")===day)
     val dataAll = new ArrayBuffer[String]()
@@ -77,11 +77,11 @@ object daily{
       val cnt = s._2.size
       val cntdisc = s._2.toArray.map(s => s._3).distinct.length
       (police_station,cnt+","+cntdisc)
-    }).join(officecntdisc).map( s =>{
-      val warning_date = s._2._2.split(","){0}
+    }).leftOuterJoin(officecntdisc).map( s =>{
+      val warning_date = s._2._2.map(s => s.split(","){0}).mkString("")
       val police_station = s._1
-      val todayCnt = s._2._2.split(","){1}
-      val todayPerson = s._2._2.split(","){2}
+      val todayCnt = s._2._2.map(s => s.split(","){1}).mkString("")
+      val todayPerson = s._2._2.map(s => s.split(","){2}).mkString("")
       val allCnt = s._2._1.split(","){0}
       val allPerson = s._2._1.split(","){1}
       warning_date+","+police_station+","+todayCnt+","+todayPerson+","+allCnt+","+allPerson

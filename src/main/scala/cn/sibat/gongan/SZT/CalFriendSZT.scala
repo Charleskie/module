@@ -46,8 +46,8 @@ object CalFriendSZT{
   /**
     * 深圳通的数据格式
     */
-  case class szt(card_id: String, deal_time:String, deal_type: String, deal_money: String, deal_value:String, station_id:String,
-                 line:String, station_name:String, busCard:String, day:String)
+  case class szt(card_id: String, deal_time:String, deal_type: String, deal_money: String, deal_value:String,
+                 station_id:String, line:String, station_name:String, busCard:String, day:String)
 
   /***
     *做深圳通OD连接

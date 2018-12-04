@@ -3,15 +3,21 @@ package cn.sibat.gongan.UDF
 import java.text.SimpleDateFormat
 import java.util.Date
 import org.apache.spark.sql.functions.udf
+import cn.sibat.wangsheng.timeformat.TimeFormat._
 
 object TimeFormat{
+  val newFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
   /***
     * 编写SparkDataFrame的UDF
     * 将感知门的stime转成标准时间格式
     */
   val timeParse = udf((s:String) => {
     val oldFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
-    val newFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    newFormat.format(oldFormat.parse(s))
+  })
+
+  val TimeParse = udf((s:String, format:String)=>{
+    val oldFormat = new SimpleDateFormat(format)
     newFormat.format(oldFormat.parse(s))
   })
 
@@ -42,6 +48,9 @@ object TimeFormat{
     s2.toLong - s1.toLong
   })
 
+  val timeSlice = udf((s:String)=>{
+    changetime(string2timeString(s,"yyyyMMddHHmmss"),5)
+  })
 
   def timeParse(s: String) ={
     val oldFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")

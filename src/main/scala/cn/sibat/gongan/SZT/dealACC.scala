@@ -53,4 +53,3 @@ object dealACC {
     newFormat.format(oldFormat.parse(s))
   })
 }
-//DATA_OPER_DAY	起始时间	截止时间	IN_ADDRESS	站点	进站人次	出站人次

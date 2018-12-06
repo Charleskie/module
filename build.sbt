@@ -11,3 +11,5 @@ libraryDependencies += "org.apache.hbase" % "hbase-common" % "0.96.1.1-hadoop2"
 libraryDependencies += "org.apache.hbase" % "hbase-server" % "0.96.1.1-hadoop2"
 // https://mvnrepository.com/artifact/org.lucee/postgresql
 libraryDependencies += "org.lucee" % "postgresql" % "8.3-606.jdbc4"
+// https://mvnrepository.com/artifact/joda-time/joda-time
+libraryDependencies += "joda-time" % "joda-time" % "1.6"

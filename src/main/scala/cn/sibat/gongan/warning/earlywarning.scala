@@ -7,8 +7,8 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, SparkSession}
 
 object earlywarning{
-  private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\data\\"
-//  private val path = "C:\\Users\\administer\\Desktop\\Kim1023\\"
+//  private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\data\\"
+  private val path = "C:\\Users\\administer\\Desktop\\Kim1023\\"
   private val day = "1119"
   private val Months:Array[String] = Array("11")
   private val DATE:Array[String] = Array("11/13","11/12","11/14","11/15","11/16","11/17","11/18")
@@ -27,48 +27,34 @@ object earlywarning{
 
 //    val date = sparkSession.read.textFile(path+"early_warning1029.xls").rdd.foreach(println)
 
-//    data.foreach(println)
-//    calDayCount(data)
-//    calHourCount(data)
-//    calStationCount(data)
-//    calTypeCount(data)
-//    calSimilarityCount(data)
-//    calStationCountDist(data)
-//    calTrail(data)
-    calSum(data)
 
     val police_station = sparkSession.sparkContext.textFile(path+"police_station.csv")
 
     calOfficeCount(data,police_station)
-//    calFlow(data)
 
   }
 
-  def calSum(rdd: RDD[String])={
+  def calSum(rdd: RDD[earlywarning])={
     println(rdd.count())
-    println(rdd.filter(s => s.split(","){6}=="立即处置").count())
+    println(rdd.filter(s => s.keyperson_state=="立即处置").count())
   }
 
   /***
     * 计算日预警量
     * @param rdd
     */
-  def calDayCount(rdd: RDD[String]): Unit ={
+  def calDayCount(rdd: RDD[String]): RDD[String] ={
     rdd.map(s => {
       val line = s.split(",")
       (line(0),string2time(line(15)).substring(0,10))
     }).groupBy(s => s._2).map(s => s._1+","+s._2.size)
-//      .foreach(println)
-      .coalesce(1).saveAsTextFile(path+"out/"+day+"/dayCount")
   }
 
-  def calHourCount(rdd: RDD[String]):Unit ={
+  def calHourCount(rdd: RDD[String]):RDD[String] ={
     rdd.map(s=> {
       val line = s.split(",")
       (line(0),string2time(line(15)).substring(10,13))
     }).groupBy(s=> s._2).map(s=> s._1+","+s._2.size)
-//      .foreach(println)
-      .coalesce(1).saveAsTextFile(path+"out/"+day+"/hourCount")
   }
 
   /***
@@ -92,16 +78,14 @@ object earlywarning{
     * 计算站点预警量
     * @param rdd
     */
-  def calStationCount(rdd:RDD[String]):Unit ={
+  def calStationCount(rdd:RDD[String]):RDD[String] ={
     rdd.map(s =>{
       val ss = s.split(",")
       (ss(0),ss(9))
     }).groupBy(s=>s._2).map(s=> s._1+","+s._2.size)
-//      .foreach(println)
-      .coalesce(1).saveAsTextFile(path+"out/"+day+"/stationCount")
   }
 
-  def calStationCountDist(rdd:RDD[String]):Unit={
+  def calStationCountDist(rdd:RDD[String]):RDD[String] ={
     rdd.filter(s => s.split(","){6}=="立即处置").map(s =>{
       val line = s.split(",")
       (line(5),line(6),line(9))
@@ -109,14 +93,13 @@ object earlywarning{
       val distinct = s._2.toArray.distinct.length
       s._1+","+distinct
     }).map(_.replaceAll("\\(","")).map(_.replaceAll("\\)",""))
-//      .foreach(println)
-      .coalesce(1).saveAsTextFile(path+"out/"+day+"/stationCountDist")
   }
+
   /***
     * 计算各个预警类型的人数分布
     * @param rdd
     */
-  def calTypeCount(rdd: RDD[String]): Unit ={
+  def calTypeCount(rdd: RDD[String]): RDD[String] ={
     rdd.map(s =>{
       val line = s.split(",")
       (line(0),line(6),line(7),line.length)
@@ -124,15 +107,13 @@ object earlywarning{
       val line = s.replaceAll("\\(","").replaceAll("\\)","").split(",")
       line(0)+","+line(1)+","+line(2)
     })
-//      .foreach(println)
-      .coalesce(1).saveAsTextFile(path+"out/"+day+"/typecount")
   }
 
   /***
     * 计算人脸准确度在各个百分比范围的占比
     * @param rdd
     */
-  def calSimilarityCount(rdd: RDD[String]):Unit={
+  def calSimilarityCount(rdd: RDD[String]): Unit= {
     rdd.map(_.split(",")).filter(_.length>=20).map(s => (s(0),s(19))).filter(_._2!="")
       .groupBy(s => s._2.toDouble.toString.substring(0,5)).map(s => s._1.replaceAll("","").replaceAll("\\)","")+","+s._2.size)
       .foreach(println)
@@ -142,7 +123,7 @@ object earlywarning{
     * 计算个人预警轨迹
     * @param rdd
     */
-  def calTrail(rdd: RDD[String]):Unit={
+  def calTrail(rdd: RDD[String]):RDD[String] = {
     rdd.filter(s => s.split(","){6}=="立即处置").map(s =>{
       val line = s.split(",")
       (line(5),line(6),line(9))
@@ -158,7 +139,7 @@ object earlywarning{
     * @param rdd
     * @param office
     */
-  def calOfficeCount(rdd:RDD[String],office:RDD[String]): Unit ={
+  def calOfficeCount(rdd:RDD[String],office:RDD[String]): RDD[String] ={
     val office_station = office.map(s =>{
       val line = s.split(",")
       val police_station = line(1)
@@ -201,7 +182,7 @@ object earlywarning{
     * 计算客流数据
     * @param rdd
     */
-  def calFlow(rdd:RDD[String]): Unit={
+  def calFlow(rdd:RDD[String]): RDD[String]={
     rdd.filter(s => s.split(","){12}.substring(0,4)=="2018").map(s =>{
       val line = s.split(",")
       val card_id = line(0)
@@ -217,7 +198,7 @@ object earlywarning{
       val avg = hourArray.sum/hourArray.length
       val hour = s._1
       hour+","+avg.toInt
-    }).coalesce(1).saveAsTextFile(path+"out/"+day+"/flow")
+    })
   }
 
   case class earlywarning(id: String, device_id: String, device_type:String, device_address:String, data_sources:String ,

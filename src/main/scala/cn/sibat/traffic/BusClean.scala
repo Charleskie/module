@@ -2,8 +2,6 @@ package cn.sibat.traffic
 
 import java.sql.{Connection, DriverManager, SQLException}
 import java.text.SimpleDateFormat
-
-//import cn.sibat.traffic.BusClean.{BusDeal, BusO, BusStationGPS}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.joda.time.DateTime

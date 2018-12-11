@@ -1,6 +1,6 @@
 package cn.sibat.gongan
 
-import cn.sibat.wangsheng.timeformat.TimeFormat.{changetime, string2timeString}
+import cn.sibat.wangsheng.timeformat.TimeFormat.{changetime, StringToISO}
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import org.apache.spark.sql.SparkSession
@@ -35,7 +35,7 @@ object testGongAn{
       val line = s.getString(7)
       val car_id = s.getString(8)
       val date = deal_time.substring(0,8)
-      (card_id,changetime(string2timeString(deal_time,"yyyyMMddHHmmss"),5),deal_type,deal_money,deal_value,station_id,company,line,date)
+      (card_id,changetime(StringToISO(deal_time,"yyyyMMddHHmmss"),5),deal_type,deal_money,deal_value,station_id,company,line,date)
     }).filter(_._3.contains("地铁入站")).groupBy(s => (s._6,s._2,s._3)).map(s => {
       val station_id = s._1._1
       val timeSlice = s._1._2

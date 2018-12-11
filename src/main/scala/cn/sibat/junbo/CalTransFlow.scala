@@ -53,9 +53,9 @@ object CalTransFlow{
     val szt = dataSzt.filter(s => s.split(",").length<=10).map(line =>{
       val s = line.split(",")
       if(s.length==10){
-        SZT(s(0),string2timeString(s(1),"yyyyMMddHHmmss"),s(2),s(3),s(4),s(5),s(6),s(7),s(8),s(9))
+        SZT(s(0),StringToISO(s(1),"yyyyMMddHHmmss"),s(2),s(3),s(4),s(5),s(6),s(7),s(8),s(9))
       }else if(s.length==9){
-        SZT(s(0),string2timeString(s(1),"yyyyMMddHHmmss"),s(2),s(3),s(4),s(5),s(6),s(7),s(8),"2018-11-14")
+        SZT(s(0),StringToISO(s(1),"yyyyMMddHHmmss"),s(2),s(3),s(4),s(5),s(6),s(7),s(8),"2018-11-14")
       }else{
         SZT("","","","","","","","","","")
       }

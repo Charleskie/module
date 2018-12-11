@@ -1,6 +1,7 @@
 package cn.sibat.wangsheng.timeformat
 
 import java.text.SimpleDateFormat
+import java.util.{Calendar, Date}
 
 object TimeFormat{
   private val TIME = "# TimeFormat Trans ERROR # "
@@ -12,7 +13,7 @@ object TimeFormat{
     * @param format 原本的格式
     * @return
     */
-  def string2timeString(time: String, format: String) :String=  {
+  def StringToISO(time: String, format: String) :String=  {
     val foreFormat = new SimpleDateFormat(format)
     try{
       ISOFormat.format(foreFormat.parse(time))
@@ -67,5 +68,19 @@ object TimeFormat{
     }catch {
       case e:Exception => return 1000000000
     }
+  }
+
+  /***
+    * 获取当天后的第int天日期,int可以是正数，也可以是负数，返回日期格式由format定义
+    * @param int
+    */
+  def getDate(int: Int,format: String): String ={
+    val newFormat = new SimpleDateFormat(format)
+    val dateNow = new Date()
+    val calender = Calendar.getInstance()
+    calender.setTime(dateNow)
+    calender.add(Calendar.DAY_OF_MONTH,int)
+    val day = newFormat.format(calender.getTime).substring(0,10)
+    day
   }
 }

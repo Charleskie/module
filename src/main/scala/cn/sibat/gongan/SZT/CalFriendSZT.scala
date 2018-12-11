@@ -2,7 +2,7 @@ package cn.sibat.gongan.SZT
 
 import cn.sibat.homeAndwork.MarkHomeWork.{ODlink, sample, string2time, timediff}
 import org.apache.spark.sql.SparkSession
-import cn.sibat.wangsheng.timeformat.TimeFormat.{changetime, string2timeString}
+import cn.sibat.wangsheng.timeformat.TimeFormat.{changetime, StringToISO}
 
 object CalFriendSZT{
   def main(args: Array[String]): Unit = {
@@ -13,7 +13,7 @@ object CalFriendSZT{
 
     val data = sparkSession.sparkContext.textFile(path).map(line=>{
       val s = line.split(",")
-      szt(s(0),string2timeString(s(1),"yyyyMMddHHmmss"),s(2),s(3),s(4),s(5),s(6),s(7),s(8),s(9))
+      szt(s(0),StringToISO(s(1),"yyyyMMddHHmmss"),s(2),s(3),s(4),s(5),s(6),s(7),s(8),s(9))
     })
     val subwaydata = data.filter(_.deal_type == "地铁.*").groupBy(_.station_id).flatMap(s => makeOD(s))
       .filter(_.timediff!="-1").map(s => s)

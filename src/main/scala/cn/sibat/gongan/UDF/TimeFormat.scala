@@ -49,7 +49,7 @@ object TimeFormat{
   })
 
   val timeSlice = udf((s:String)=>{
-    changetime(string2timeString(s,"yyyyMMddHHmmss"),5)
+    changetime(StringToISO(s,"yyyyMMddHHmmss"),5)
   })
 
   def timeParse(s: String) ={

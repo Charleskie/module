@@ -38,5 +38,15 @@ object CaseConstant{
                             is_delete:String,create_user:String,submit_user:String,juris_category:String,
                             person_descript:String)
 
+  /***
+    *广州地铁数据字段
+    */
+  case class gzdt(card_id:String, card_type:String, deal_type:String, line:String, station_name: String, a_num:String,
+                  deal_time:String, b_num:String, c_num:String,d_num:String)
 
+  /**
+    * 深圳通的数据格式
+    */
+  case class szt(card_id: String, deal_time:String, deal_type: String, deal_money: String, deal_value:String,
+                 station_id:String, line:String, station_name:String, busCard:String, day:String)
 }

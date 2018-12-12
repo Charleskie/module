@@ -2,6 +2,7 @@ package cn.sibat.wangsheng.timeformat
 
 import java.text.SimpleDateFormat
 import java.util.{Calendar, Date}
+import java.util.Locale
 
 object TimeFormat{
   private val TIME = "# TimeFormat Trans ERROR # "
@@ -14,7 +15,7 @@ object TimeFormat{
     * @return
     */
   def StringToISO(time: String, format: String) :String=  {
-    val foreFormat = new SimpleDateFormat(format)
+    val foreFormat = new SimpleDateFormat(format,Locale.ENGLISH)
     try{
       ISOFormat.format(foreFormat.parse(time))
     }catch {
@@ -22,6 +23,7 @@ object TimeFormat{
         val date = "1979-01-01T08:08:08.000Z"
 //        ISOFormat.format(foreFormat.parse(date))
         println(TIME+e.getMessage)
+        e.printStackTrace()
         date
       }
     }
@@ -82,5 +84,28 @@ object TimeFormat{
     calender.add(Calendar.DAY_OF_MONTH,int)
     val day = newFormat.format(calender.getTime).substring(0,10)
     day
+  }
+
+  /***
+    * 判断当前日期是否是周末，如果是就返回weekend，不是则返回workday，日期错误则返回DATE ERROR
+    * @param date
+    * @param format
+    * @return
+    */
+  def isWeekend(date:String, format:String):String={
+    val newFormat = new SimpleDateFormat(format)
+    val dateNow = new Date()
+    val calender = Calendar.getInstance()
+    try{
+      calender.setTime(newFormat.parse(date))
+      if(calender.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY||calender.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY){
+        return "weekend"
+      }else{
+        return "workday"
+      }
+    }catch {
+      case e:Exception => return "DATE ERROR"
+    }
+
   }
 }

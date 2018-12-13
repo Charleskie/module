@@ -106,6 +106,29 @@ object TimeFormat{
     }catch {
       case e:Exception => return "DATE ERROR"
     }
+  }
 
+  /***
+    * 判断当前日期是否是周末，如果是就返回weekend，不是则返回workday，日期错误则返回DATE ERROR
+    * @param date
+    * @param format
+    * @return
+    */
+  def isSundayorSaturday(date:String, format:String):String={
+    val newFormat = new SimpleDateFormat(format)
+    val dateNow = new Date()
+    val calender = Calendar.getInstance()
+    try{
+      calender.setTime(newFormat.parse(date))
+      if(calender.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY)
+        return "monday"
+      if(calender.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY){
+        return "sunday"
+      }else{
+        return "workday"
+      }
+    }catch {
+      case e:Exception => return "DATE ERROR"
+    }
   }
 }

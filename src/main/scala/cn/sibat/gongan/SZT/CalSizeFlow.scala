@@ -1,11 +1,12 @@
 package cn.sibat.gongan.SZT
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
 import cn.sibat.gongan.UDF.TimeFormat._
 import cn.sibat.wangsheng.timeformat.TimeFormat._
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
+import org.apache.spark.rdd.RDD
 
 object CalSizeFlow{
   val path = ""
@@ -37,5 +38,42 @@ object CalSizeFlow{
     datain.coalesce(1).write.csv(outpath+"in5min")
     dataout.coalesce(1).write.csv(outpath+"out5min")
 
+  }
+
+  def CalSizeFlow(sparkSession: SparkSession,rdd: RDD[(String,String,String)],station_name:String,deal_type:String,beginday:String, endday:String): DataFrame ={
+    import sparkSession.implicits._
+    rdd.toDF("station_name","deal_type","deal_time").filter(col("deal_type")===deal_type)
+      .filter(col("station_name")===station_name)
+      .filter(col("deal_time").substr(0,10)>=beginday)
+      .filter(col("deal_time").substr(0,10)<=endday).withColumn("deal_time",timeSlice(col("deal_time")))
+      .withColumn("date",col("deal_time").substr(0,10))
+      .groupBy("station_name","deal_time").count().toDF("station_name","deal_time","cnt")
+  }
+
+  /***
+    * 不区分进出站类型
+    * @return
+    */
+  def CalSizeFlow(sparkSession: SparkSession,rdd: RDD[(String,String,String)],station_name:String,beginday:String, endday:String): DataFrame ={
+    import sparkSession.implicits._
+    rdd.toDF("station_name","deal_type","deal_time")
+      .filter(col("station_name")===station_name)
+      .filter(col("deal_time").substr(0,10)>=beginday)
+      .filter(col("deal_time").substr(0,10)<=endday).withColumn("deal_time",timeSlice(col("deal_time")))
+      .withColumn("date",col("deal_time").substr(0,10))
+      .groupBy("station_name","deal_time").count().toDF("station_name","deal_time","cnt")
+  }
+
+  /***
+    * 不区分站点，全线网
+    * @return
+    */
+  def CalSizeFlow(sparkSession: SparkSession,rdd: RDD[(String,String,String)],beginday:String, endday:String): DataFrame ={
+    import sparkSession.implicits._
+    rdd.toDF("station_name","deal_type","deal_time")
+      .filter(col("deal_time").substr(0,10)>=beginday)
+      .filter(col("deal_time").substr(0,10)<=endday).withColumn("deal_time",timeSlice(col("deal_time")))
+      .withColumn("date",col("deal_time").substr(0,10))
+      .groupBy("station_name","deal_time").count().toDF("station_name","deal_time","cnt")
   }
 }

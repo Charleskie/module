@@ -1,8 +1,8 @@
 package cn.sibat.wangsheng.timeformat
 
 import java.text.SimpleDateFormat
+import java.text.ParseException
 import java.util.{Calendar, Date}
-import java.util.Locale
 
 object TimeFormat{
   private val TIME = "# TimeFormat Trans ERROR # "
@@ -14,20 +14,46 @@ object TimeFormat{
     * @param format 原本的格式
     * @return
     */
-  def StringToISO(time: String, format: String) :String=  {
-    val foreFormat = new SimpleDateFormat(format,Locale.ENGLISH)
+  def StringToISO(time: String,format: String) :String=  {
+    val foreFormat = new SimpleDateFormat(format,java.util.Locale.ENGLISH)
     try{
       ISOFormat.format(foreFormat.parse(time))
     }catch {
-      case e: Exception =>{
+      case e: ParseException =>{
         val date = "1979-01-01T08:08:08.000Z"
 //        ISOFormat.format(foreFormat.parse(date))
-        println(TIME+e.getMessage)
+//        println(TIME+e.getMessage)
+        println(TIME+time)
         e.printStackTrace()
         date
       }
     }
   }
+
+  /***
+    *
+    * @param time
+    * @param format 原本的格式
+    * @return
+    */
+  //  def StringToISO(time: String, format: String) :String=  {
+  def StringToISO(time: String, format: SimpleDateFormat) :String=  {
+    //    val foreFormat = new SimpleDateFormat(format,Locale.ENGLISH)
+    val ts = format.parse("DEC 11 2018 12:12:21:000AM");
+    try{
+            ISOFormat.format(format.parse(time))
+    }catch {
+      case e: ParseException =>{
+        val date = "1979-01-01T08:08:08.000Z"
+        //        ISOFormat.format(foreFormat.parse(date))
+        //        println(TIME+e.getMessage)
+        println(TIME+time)
+        e.printStackTrace()
+        date
+      }
+    }
+  }
+
 
   /***
     * @param time "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"时间格式

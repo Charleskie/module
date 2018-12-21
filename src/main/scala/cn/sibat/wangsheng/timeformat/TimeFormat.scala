@@ -1,7 +1,7 @@
 package cn.sibat.wangsheng.timeformat
 
-import java.text.SimpleDateFormat
-import java.text.ParseException
+
+import java.text.{ParseException, SimpleDateFormat}
 import java.util.{Calendar, Date}
 
 object TimeFormat{

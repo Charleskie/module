@@ -49,4 +49,14 @@ object CaseConstant{
     */
   case class szt(card_id: String, deal_time:String, deal_type: String, deal_money: String, deal_value:String,
                  station_id:String, line:String, station_name:String, busCard:String, day:String)
+
+  /***
+    * 站点和时间
+    */
+  case class sizeflow15min(station_name:String, deal_time:String,cnt:Long)
+
+  /***
+    *
+    */
+  case class peak()
 }

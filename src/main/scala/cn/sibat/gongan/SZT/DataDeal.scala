@@ -5,7 +5,6 @@ import java.util.Locale
 import scala.collection.mutable.HashMap
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
-import cn.sibat.wangsheng.timeformat.TimeFormat.changetime
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import cn.sibat.gongan.Constant.CaseConstant._

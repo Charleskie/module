@@ -2,14 +2,12 @@ package cn.sibat.gongan.SZT
 
 import cn.sibat.gongan.Algorithm.CalPeakHourFactorAlgorithm
 import cn.sibat.gongan.Constant.CaseConstant._
-import cn.sibat.wangsheng.timeformat.TimeFormat._
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import scala.collection.mutable.HashMap
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.col
-
-import scala.collection.mutable
+import cn.sibat.util.timeformat.TimeFormat._
 
 object CalSZTPeakHourFactor{
   def main(args: Array[String]): Unit = {

@@ -3,7 +3,6 @@ package cn.sibat.gongan.SZT
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
 import cn.sibat.gongan.UDF.TimeFormat._
-import cn.sibat.wangsheng.timeformat.TimeFormat._
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import org.apache.spark.rdd.RDD

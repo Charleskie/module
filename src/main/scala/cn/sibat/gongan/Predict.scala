@@ -5,12 +5,12 @@ import java.util.Locale
 import scala.collection.mutable.HashMap
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
-import cn.sibat.wangsheng.timeformat.TimeFormat.changetime
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import cn.sibat.gongan.Constant.CaseConstant._
 import org.apache.spark.rdd.RDD
 import cn.sibat.gongan.SZT.CalSizeFlow._
+import cn.sibat.util.timeformat.TimeFormat._
 
 object Predict{
 //  val datapath = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\客流预测\\data\\"

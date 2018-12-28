@@ -3,7 +3,7 @@ package cn.sibat.gongan.UDF
 import java.text.SimpleDateFormat
 import java.util.Date
 import org.apache.spark.sql.functions.udf
-import cn.sibat.wangsheng.timeformat.TimeFormat._
+import cn.sibat.util.timeformat.TimeFormat._
 
 object TimeFormat{
   val newFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")

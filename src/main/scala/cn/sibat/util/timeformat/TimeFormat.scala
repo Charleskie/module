@@ -1,5 +1,4 @@
-package cn.sibat.wangsheng.timeformat
-
+package cn.sibat.util.timeformat
 
 import java.text.{ParseException, SimpleDateFormat}
 import java.util.{Calendar, Date}

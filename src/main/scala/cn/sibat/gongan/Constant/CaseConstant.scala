@@ -51,6 +51,11 @@ object CaseConstant{
                  station_id:String, line:String, station_name:String, busCard:String, day:String)
 
   /***
+    * 深圳通有效字段
+    */
+  case class sztuseful(card:String, deal_time:String, deal_type: String, station_name:String)
+
+  /***
     * 站点和时间
     */
   case class sizeflow15min(station_name:String, deal_time:String,cnt:Long)

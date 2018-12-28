@@ -1,10 +1,10 @@
 package cn.sibat.gongan
 
-import cn.sibat.wangsheng.timeformat.TimeFormat.{changetime, StringToISO}
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.col
+import cn.sibat.util.timeformat.TimeFormat._
 
 object testGongAn{
   def main(args: Array[String]): Unit = {

@@ -4,9 +4,8 @@ import org.apache.spark.sql.functions.col
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import org.apache.spark.sql.SparkSession
-import cn.sibat.wangsheng.timeformat.TimeFormat._
 import org.apache.spark.rdd.RDD
-
+import cn.sibat.util.timeformat.TimeFormat._
 import scala.collection.mutable.ArrayBuffer
 
 object CalTransFlow{

@@ -1,8 +1,8 @@
 package cn.sibat.gongan.SZT
 
-import cn.sibat.homeAndwork.MarkHomeWork.{ODlink, sample, string2time, timediff}
+import cn.sibat.homeAndwork.MarkHomeWork.{ string2time, timediff}
 import org.apache.spark.sql.SparkSession
-import cn.sibat.wangsheng.timeformat.TimeFormat.{changetime, StringToISO}
+import cn.sibat.util.timeformat.TimeFormat._
 
 object CalFriendSZT{
   def main(args: Array[String]): Unit = {

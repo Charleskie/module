@@ -1,12 +1,12 @@
 package cn.sibat.gongan.GZDT
 
 import cn.sibat.gongan.Constant.CaseConstant.gzdt
-import cn.sibat.wangsheng.timeformat.TimeFormat.{StringToISO, changetime}
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.col
+import cn.sibat.util.timeformat.TimeFormat._
 
 object CalGzSubway{
   val datapath = "I:\\Kim1023\\data\\GZDT\\"

@@ -1,12 +1,12 @@
 package cn.sibat.gongan.warning
 
 import java.text.{DateFormat, SimpleDateFormat}
-import cn.sibat.wangsheng.timeformat.TimeFormat._
 import cn.sibat.gongan.GetDataService.GetWarningData
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{SQLContext, SparkSession}
+import cn.sibat.util.timeformat.TimeFormat._
 
 object earlywarning{
   private val path = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\data\\"

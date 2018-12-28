@@ -1,8 +1,6 @@
 
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Calendar
-import org.apache.spark.sql.catalyst.expressions.UnixTimestamp
 import org.apache.spark.sql.functions.udf
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions.col
@@ -189,22 +187,12 @@ object monthWarning {
       val cntdisc = s._2.toArray.map(s => s._3).distinct.length
       (police_station, cnt + "," + cntdisc)
     }).leftOuterJoin(officecntdisc).map(s => {
-      val warning_date = s._2._2.map(s => s.split(",") {
-        0
-      }).mkString("")
+      val warning_date = s._2._2.map(s => s.split(","){0}).mkString("")
       val police_station = s._1
-      val todayCnt = s._2._2.map(s => s.split(",") {
-        1
-      }).mkString("")
-      val todayPerson = s._2._2.map(s => s.split(",") {
-        2
-      }).mkString("")
-      val allCnt = s._2._1.split(",") {
-        0
-      }
-      val allPerson = s._2._1.split(",") {
-        1
-      }
+      val todayCnt = s._2._2.map(s => s.split(","){1}).mkString("")
+      val todayPerson = s._2._2.map(s => s.split(","){2}).mkString("")
+      val allCnt = s._2._1.split(","){0}
+      val allPerson = s._2._1.split(","){1}
       warning_date + "," + police_station + "," + todayCnt + "," + todayPerson + "," + allCnt + "," + allPerson
     }).collect().foreach(s => dataAll.append(s))
     println("##----分派出所计算完毕----##")
@@ -223,22 +211,12 @@ object monthWarning {
       val cntdisc = s._2.map(s => s._2).toArray.distinct.length
       (keyperson_type, warning_date + "," + cnt + "," + cntdisc)
     }).rightOuterJoin(allType).map(s => {
-      val warning_date = s._2._1.map(s => s.split(",") {
-        0
-      }).mkString("")
+      val warning_date = s._2._1.map(s => s.split(","){0}).mkString("")
       val keyperson_type = s._1
-      val todayCnt = s._2._1.map(s => s.split(",") {
-        1
-      }).mkString("")
-      val todayPerson = s._2._1.map(s => s.split(",") {
-        2
-      }).mkString("")
-      val allCnt = s._2._2.split(",") {
-        0
-      }
-      val allPerson = s._2._2.split(",") {
-        1
-      }
+      val todayCnt = s._2._1.map(s => s.split(","){1}).mkString("")
+      val todayPerson = s._2._1.map(s => s.split(","){2}).mkString("")
+      val allCnt = s._2._2.split(","){0}
+      val allPerson = s._2._2.split(","){1}
       warning_date + "," + keyperson_type + "," + todayCnt + "," + todayPerson + "," + allCnt + "," + allPerson
     }).collect().foreach(s => dataAll.append(s))
     println("##----分类型计算完毕----##")
@@ -257,22 +235,12 @@ object monthWarning {
       val cntdist = s._2.map(s => s._3).toArray.distinct.length
       (station_name, warning_date + "," + cnt + "," + cntdist)
     }).join(stationAll).map(s => {
-      val warning_date = s._2._1.split(",") {
-        0
-      }
+      val warning_date = s._2._1.split(","){0}
       val event_address_name = s._1
-      val todayCnt = s._2._1.split(",") {
-        1
-      }
-      val todayPerson = s._2._1.split(",") {
-        2
-      }
-      val allCnt = s._2._2.split(",") {
-        0
-      }
-      val allPerson = s._2._2.split(",") {
-        1
-      }
+      val todayCnt = s._2._1.split(","){1}
+      val todayPerson = s._2._1.split(","){2}
+      val allCnt = s._2._2.split(","){0}
+      val allPerson = s._2._2.split(","){1}
       warning_date + "," + event_address_name + "," + todayCnt + "," + todayPerson + "," + allCnt + "," + allPerson
     }).collect().foreach(s => dataAll.append(s))
     println("##----全部计算完毕----##")

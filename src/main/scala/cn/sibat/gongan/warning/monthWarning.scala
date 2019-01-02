@@ -233,7 +233,7 @@ object monthWarning {
       val cntdisc = s._2.map(s => s._2).toArray.distinct.size
       (event_address_name, cnt + "," + cntdisc)
     })
-    early_warning.select("event_address_name", "warning_date", "keyperson_id").rdd.map(s => (s.getString(0), s.getString(1), s.getString(2))).groupBy(s => (s._1, s._2)).map(s => {
+    early_warning.select("event_address_name", "warning_date", "keyperson_id").rdd.map(s => (s.getString(0), s.getString(1).substring(0,7), s.getString(2))).groupBy(s => (s._1, s._2)).map(s => {
       val warning_date = s._1._2
       val station_name = s._1._1
       val cnt = s._2.size
@@ -247,7 +247,7 @@ object monthWarning {
       val allCnt = s._2._2.split(","){0}
       val allPerson = s._2._2.split(","){1}
       warning_date + "," + event_address_name + "," + todayCnt + "," + todayPerson + "," + allCnt + "," + allPerson
-    }).collect().foreach(s => dataAll.append(s))
+    }).coalesce(1).saveAsTextFile(outpath+"station")
     println("##----全部计算完毕----##")
   }
 }

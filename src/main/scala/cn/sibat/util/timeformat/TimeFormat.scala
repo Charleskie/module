@@ -5,7 +5,7 @@ import java.util.{Calendar, Date}
 
 object TimeFormat{
   private val TIME = "# TimeFormat Trans ERROR # "
-  val ISOFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+  private val ISOFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 
   /***
     *
@@ -20,8 +20,6 @@ object TimeFormat{
     }catch {
       case e: ParseException =>{
         val date = "1979-01-01T08:08:08.000Z"
-//        ISOFormat.format(foreFormat.parse(date))
-//        println(TIME+e.getMessage)
         println(TIME+time)
         e.printStackTrace()
         date
@@ -35,17 +33,13 @@ object TimeFormat{
     * @param format 原本的格式
     * @return
     */
-  //  def StringToISO(time: String, format: String) :String=  {
   def StringToISO(time: String, format: SimpleDateFormat) :String=  {
-    //    val foreFormat = new SimpleDateFormat(format,Locale.ENGLISH)
     val ts = format.parse("DEC 11 2018 12:12:21:000AM");
     try{
             ISOFormat.format(format.parse(time))
     }catch {
       case e: ParseException =>{
         val date = "1979-01-01T08:08:08.000Z"
-        //        ISOFormat.format(foreFormat.parse(date))
-        //        println(TIME+e.getMessage)
         println(TIME+time)
         e.printStackTrace()
         date
@@ -153,7 +147,9 @@ object TimeFormat{
         return "workday"
       }
     }catch {
-      case e:Exception => return "DATE ERROR"
+      case e:Exception =>
+        println(date)
+        return "DATE ERROR"
     }
   }
 }

@@ -12,6 +12,7 @@ object test{
 
 //    println(StringToISO("DEC 11 2018 12:12:21:000AM",foreFormat))
     val ts = foreFormat.parse("DEC 11 2018 12:12:21:000AM");
+    println(changetime(StringToISO("DEC 11 2018 12:14:21:000PM","MMM d yyyy h:mm:ss:000aa"),5))
     println(ts);
   }
 }

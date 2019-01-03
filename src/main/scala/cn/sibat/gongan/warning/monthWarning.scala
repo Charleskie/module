@@ -158,7 +158,7 @@ object monthWarning {
     val calender = Calendar.getInstance()
     calender.setTime(dateNow)
     calender.add(Calendar.DAY_OF_MONTH, -1)
-    val day = newFormat.format(calender.getTime).substring(0, 10)
+//    val day = newFormat.format(calender.getTime).substring(0, 10)
     val endday = "2018-12-31"
     val early_warningAll = getWarningAndExam(sparkSession)._1.select("id", "keyperson_type", "keyperson_id", "event_address_name", "create_time", "pid", "similarity").withColumn("warning_date", timeParse(col("create_time")).substr(0, 10)).filter(col("warning_date") >= beginDay).filter(col("warning_date") <= endday)
     val police_station = getPoliceStation(sparkSession, path)

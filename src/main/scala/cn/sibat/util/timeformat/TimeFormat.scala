@@ -18,7 +18,7 @@ object TimeFormat{
     try{
       ISOFormat.format(foreFormat.parse(time))
     }catch {
-      case e: ParseException =>{
+      case e: Exception =>{
         val date = "1979-01-01T08:08:08.000Z"
         println(TIME+time)
         e.printStackTrace()

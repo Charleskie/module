@@ -63,5 +63,7 @@ object CalLinePeak{
       sizeflow15min("",deal_time,cnt)
     })
     CalPeakHourFactorAlgorithm.CalPeakHourFactor(spark,commonfactor).foreach(println)
+
+
   }
 }

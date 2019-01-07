@@ -32,6 +32,7 @@ object daily{
       .withColumn("warning_date",timeParse(col("create_time")).substr(0,10))
 //      .filter(col("create_time").substr(0,4)==="2018")
 
+    val examination = GetDataService.GetWarningData.getWarningAndExam(sparkSession)._2.filter(col("avaliable")===1).filter(col("examination_approval_type")==="已撤控").join(early_warningAll,col("early_warning_id")===col("id"))
     val keypersonbase = sql.read.option("header",true).csv(path+"keyperson_base.csv")
       .select("NAME","id_number_18","id","create_time")
 
@@ -109,7 +110,7 @@ object daily{
       val allCnt = s._2._2.split(","){0}
       val allPerson = s._2._2.split(","){1}
       warning_date+","+keyperson_type+","+todayCnt+","+todayPerson+","+allCnt+","+allPerson
-    }).collect().foreach(s => dataAll.append(s))
+    }).map(_.split(",")).toDF().na.fill("-").rdd.map(s => s.mkString(",")).map(s => s).collect().foreach(s => dataAll.append(s))
     println("##----分类型计算完毕----##")
     dataAll.append("#-----站点统计-------#")
     dataAll.append("日期，站点，预警量，预警人数,累计预警量，累计预警人数")

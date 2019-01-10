@@ -15,7 +15,7 @@ object CaseConstant{
   /***
     * 撤控数据表模式case
     */
-  case class examination(id:String,early_warning_id:String,early_warning_type:String,examination_approval_type:String,
+  case class examinationdata(id:String,early_warning_id:String,early_warning_type:String,examination_approval_type:String,
                          reasons_application:String,handling_opinions:String,handling_person_code:String,
                          handling_person:String,status:String,create_user_id:String,create_time:String,
                          update_user_id:String,update_time:String,avaliable:String)

@@ -146,9 +146,8 @@ object monthWarning {
       .select("warning_date", "keyperson_id", "arrest_time_diff")
   }
   def main(args: Array[String]): Unit = {
-    //TODO finish the month report code rewrite
-    val sparkSession = SparkSession.builder().master("local[*]").getOrCreate()
-    val sc = sparkSession.sparkContext
+    val spark = SparkSession.builder().master("local[*]").getOrCreate()
+    val sc = spark.sparkContext
     val beginDay = "2018-07-29"
     val month = "2018-12"
     val path = "Kim/data/"
@@ -160,14 +159,49 @@ object monthWarning {
     calender.add(Calendar.DAY_OF_MONTH, -1)
 //    val day = newFormat.format(calender.getTime).substring(0, 10)
     val endday = "2018-12-31"
-    val early_warningAll = getWarningAndExam(sparkSession)._1.select("id", "keyperson_type", "keyperson_id", "event_address_name", "create_time", "pid", "similarity").withColumn("warning_date", timeParse(col("create_time")).substr(0, 10)).filter(col("warning_date") >= beginDay).filter(col("warning_date") <= endday)
-    val police_station = getPoliceStation(sparkSession, path)
-    val early_warning = early_warningAll.filter(col("warning_date").substr(0,7) === month)
+    val early_warningAll = getWarningAndExam(spark)._1.select("id", "keyperson_type", "keyperson_id", "event_address_name", "create_time", "pid", "similarity").withColumn("warning_date", timeParse(col("create_time")).substr(0, 10)).filter(col("warning_date") >= beginDay).filter(col("warning_date") <= endday)
+    val police_station = getPoliceStation(spark, path)
+    val early_warning = early_warningAll.filter(col("warning_date").substr(0,10) === month)
     val dataAll = new ArrayBuffer[String]()
     dataAll.append("#-----总量统计-------#")
     dataAll.append("预警总量：" + early_warningAll.count() + "," + "预警总人数：" + early_warningAll.select("keyperson_id").distinct().count()+","+"上月预警总数："+early_warning.count()+"上个月预警总人数："+early_warning.select("keyperson_id").distinct().count())
     dataAll.append("立即处置预警量："+early_warningAll.filter(col("keyperson_state")==="立即处置").count()+"立即处置预警总人数："+early_warningAll.filter(col("keyperson_state")==="立即处置").select("keyperson_id").distinct().count())
     dataAll.append("上月立即处置预警量："+early_warning.filter(col("keyperson_state")==="立即处置").count()+"上月立即处置预警总人数："+early_warning.filter(col("keyperson_state")==="立即处置").select("keyperson_id").distinct().count())
+    val STface = early_warningAll.filter(col("data_device_type")==="感知门").filter(col("data_sources")==="face").select("keyperson_id").distinct.count
+    val keyperson_id_warning = early_warningAll.filter(col("data_sources")==="idno").select("keyperson_id").distinct.count
+    val faceAll = early_warningAll.filter(col("data_sources")==="face").select("keyperson_id").distinct.count
+    val YTface = faceAll-STface
+    dataAll.append("人脸预警总量："+faceAll+"商汤人脸预警："+STface+","+"云天人脸预警："+YTface+","+"感知门证件预警："+keyperson_id_warning)
+    val examination_data_error = getWarningAndExam(spark)._2.filter(col("avaliable")===1).filter(col("early_warning_tag_value")==="误报").select("early_warning_id").toDF("id").join(early_warningAll,"id")
+    val ST_examination = examination_data_error.filter(col("data_device_type")==="感知门").filter(col("data_sources")==="face").count
+    val YT_examination = examination_data_error.filter(col("data_device_type")!=="感知门").filter(col("data_sources")==="face").count
+    dataAll.append("商汤误报总量："+ST_examination+","+"云天误报总量："+YT_examination)
+
+    val examination_data = getWarningAndExam(spark)._2.filter(col("avaliable")===1).filter(col("early_warning_tag_value")!=="误报").select("early_warning_id").toDF("id").join(early_warningAll,"id").select("keyperson_id","keyperson_state","event_address_name").distinct.groupBy("keyperson_state").count.toDF.rdd
+
+    val eda = early_warningAll.select("id","keyperson_id","keyperson_state").join(getWarningAndExam(spark)._2.filter(col("avaliable")===1).filter(col("early_warning_tag_value")!=="误报").select("early_warning_id","early_warning_tag_value").toDF("id","value"),Seq("id"),"left_outer")
+
+    dataAll.append("#-----撤控统计-------#")
+    dataAll.append("预警类型，撤控人数")
+    examination_data.collect.foreach(s => dataAll.append(s.mkString(",")))
+    dataAll.append("#-----待处置统计-------#")
+    dataAll.append("预警类型，待处置人数")
+    val waiting_catch = eda.na.fill("na").filter(col("value")==="na").select("keyperson_state","keyperson_id").distinct.groupBy("keyperson_state").count.toDF.rdd.map(s => s.getString(0)+","+s.getLong(1).toString).collect.foreach(s => dataAll.append(s))
+    dataAll.append("#-----派出所撤控统计-------#")
+    dataAll.append("派出所，待处置，已撤控")
+    val examination_data_ed = getWarningAndExam(spark)._2.filter(col("avaliable")===1).filter(col("early_warning_tag_value")!=="误报").select("early_warning_id").toDF("id").join(early_warningAll,"id").select("keyperson_id","keyperson_state","event_address_name").join(police_station.toDF("police_station","event_address_name"),"event_address_name").select("keyperson_id","police_station").distinct.groupBy("police_station").count.toDF("police_station","edcnt")
+    val after_examination = early_warningAll.select("id","keyperson_id","keyperson_state","event_address_name")
+      .toDF("id","keyperson_id","keyperson_state","event_address_name")
+      .join(police_station.toDF("police_station","event_address_name"),"event_address_name")
+      .join(getWarningAndExam(spark)._2.filter(col("avaliable")===1)
+        .filter(col("early_warning_tag_value")!=="误报")
+        .select("early_warning_id","early_warning_tag_value")
+        .toDF("id","value"), Seq("id"),"left_outer").na.fill("na")
+      .filter(col("value")==="na").select("keyperson_state","keyperson_id","police_station")
+      .distinct.groupBy("police_station").count.toDF("police_station","cnt")
+      .join(examination_data_ed,"police_station").rdd
+      .map(s => s.getString(0)+","+s.getLong(1).toString+","+s.getLong(2).toString).collect.foreach(s => dataAll.append(s))
+
     println("##----总量计算完毕----##")
     dataAll.append("日期，预警量，预警人数")
     val dayCount = early_warning.select("warning_date", "keyperson_id").rdd.map(s => (s.getString(0), s.getString(1))).groupBy(s => s._1).map(s => {

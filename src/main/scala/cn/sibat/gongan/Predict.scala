@@ -9,13 +9,13 @@ import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 import cn.sibat.gongan.Constant.CaseConstant._
 import org.apache.spark.rdd.RDD
-import cn.sibat.gongan.SZT.CalSizeFlow._
 import cn.sibat.util.timeformat.TimeFormat._
 
 object Predict{
 //  val datapath = "C:\\Users\\小怪兽\\Desktop\\Kim1023\\客流预测\\data\\"
-  val datapath = "I:\\Kim1023\\客流预测\\data\\"
-  val sztpath = "I:\\Kim1023\\data\\SZT\\"
+  private val datapath = "I:\\Kim1023\\客流预测\\data\\"
+  private val sztpath = "I:\\Kim1023\\data\\SZT\\"
+  private val outpath = "Kim/data/Szt/"
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder().master("local[*]").getOrCreate()
     val sc = spark.sparkContext

@@ -10,39 +10,39 @@ import scala.collection.mutable.ArrayBuffer
 
 object monthWarning {
 
-  val POSTGRESUSER = "postgres"
-  val POSTGRESPASSWORD = "postgres"
-  val POSTGRESPORT = "5432"
-  val POSTGRESDRIVER = "org.postgresql.Driver"
+  private val POSTGRESUSER = "postgres"
+  private val POSTGRESPASSWORD = "postgres"
+  private val POSTGRESPORT = "5432"
+  private val POSTGRESDRIVER = "org.postgresql.Driver"
   /** *
     * early_warning数据库的相关信息，IP地址，数据库，数据表
     */
-  val EARLYWARNINGIP = "190.176.35.210" //early_warning数据库IP地址
-  val POLICETRAFFICDB = "police_traffic" //police_traffic数据库
-  val EARLYWRNINGTABLE = "early_warning" //early_warning表
-  val EXAMINATIONDB = "sy_early_warning_examination_approval" //是否撤空数据表
+  private val EARLYWARNINGIP = "190.176.35.210" //early_warning数据库IP地址
+  private val POLICETRAFFICDB = "police_traffic" //police_traffic数据库
+  private val EARLYWRNINGTABLE = "early_warning" //early_warning表
+  private val EXAMINATIONDB = "sy_early_warning_examination_approval" //是否撤空数据表
   /** **
     * keyperson_base数据的相关信息，IP地址，数据库，数据表
     */
-  val KEYPERSONBASEDB = "keyperson_base"
-  val GJFJCOPYIP = "190.176.35.169" //gjfj_copy数据库IP地址
-  val GJFJCOPYDB = "gjfj_copy" //gjfj_copy数据库
+  private val KEYPERSONBASEDB = "keyperson_base"
+  private val GJFJCOPYIP = "190.176.35.169" //gjfj_copy数据库IP地址
+  private val GJFJCOPYDB = "gjfj_copy" //gjfj_copy数据库
   /** *
     * 编写SparkDataFrame的UDF
     * 将感知门的stime转成标准时间格式
     */
-  val timeParse = udf((s: String) => {
+  private val timeParse = udf((s: String) => {
     val newFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     newFormat.format(newFormat.parse(s))
   })
-  val UnixParse = udf((s: String) => {
+  private val UnixParse = udf((s: String) => {
     val newFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     newFormat.format(new Date(s.toLong * 1000))
   })
   /** *
     * 字符串时间转成Unix时间戳
     */
-  val timeToUnix = udf((s: String) => {
+  private val timeToUnix = udf((s: String) => {
     try {
       val oldFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
       oldFormat.parse(s).getTime / 1000
@@ -56,7 +56,7 @@ object monthWarning {
   /** *
     * 时间格式必须是Unix格式戳
     */
-  val timediff = udf((s1: String, s2: String) => {
+  private val timediff = udf((s1: String, s2: String) => {
     s2.toLong - s1.toLong
   })
 

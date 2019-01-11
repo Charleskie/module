@@ -16,7 +16,7 @@ object GetSZTOD{
   }
   def linkpair(x: sztuseful, y: sztuseful):linkOD = {
     val timecal = timediff(StringToISO(x.deal_time,"yyyyMMddHHmmss"), StringToISO(y.deal_time,"yyyyMMddHHmmss"),"yyyyMMddHHmmss")
-    if (timecal >= 10800) {
+    if (timecal <= 10800) {
       linkOD(y.card, x.deal_time,x.station_name,y.deal_time, y.station_name, timecal)
     }else{
       linkOD("","","","","",-1)

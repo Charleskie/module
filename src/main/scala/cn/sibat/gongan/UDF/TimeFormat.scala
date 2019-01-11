@@ -6,7 +6,7 @@ import org.apache.spark.sql.functions.udf
 import cn.sibat.util.timeformat.TimeFormat._
 
 object TimeFormat{
-  val newFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+  private val newFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
   /***
     * 编写SparkDataFrame的UDF
     * 将感知门的stime转成标准时间格式

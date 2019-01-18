@@ -74,8 +74,11 @@ object monthWarning {
     * @return
     */
   def getPoliceStation(sparkSession: SparkSession, path: String): DataFrame = {
-    sparkSession.sqlContext.read.csv(path).toDF("id", "police_station", "depart_id", "station_name")
-      .select("police_station", "station_name").distinct()
+    val toStation = udf((s: String) =>{
+      s+"站"
+    })
+    sparkSession.sqlContext.read.option("header",true).csv(path).select("police_name", "station_name")
+      .toDF("police_station","station_name").withColumn("station_name",toStation(col("station_name"))).distinct()
   }
 
   /** *

@@ -28,7 +28,7 @@ object CalGzSubway{
     indata.map(_.split("\t"){6}).filter(s => s.contains("AM")&&s.substring(12,14)=="12")
     val data = indata.union(outdata).map(line =>{
       val s = line.split("\t")
-      gzdt(s(0).trim,s(1),s(2),s(3),s(4),s(5),StringToISO(s(6),"MMM d yyyy H:mm:ss:000aa"),s(7),s(8),s(9))
+      gzdt(s(0).trim,s(1),s(2),s(3),s(4),s(5),StringToISO(s(6),"MMM d yyyy h:mm:ss:000aa"),s(7),s(8),s(9))
     })
     data.foreach(println)
     val sundaydata = data.filter(s => s.deal_time.substring(0,10)=="2017-12-03"||s.deal_time.substring(0,10)=="2018-01-01"||s.deal_time.substring(0,10)=="2017-12-10"||s.deal_time.substring(0,10)=="2017-12-17")

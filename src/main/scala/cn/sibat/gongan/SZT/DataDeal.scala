@@ -12,8 +12,8 @@ import org.apache.spark.rdd.RDD
 import cn.sibat.gongan.SZT.CalSizeFlow._
 
 object DataDeal {
-  val datapath = "I:\\Kim1023\\客流预测\\outdata\\SZT\\"
-  val outpath = "I:\\Kim1023\\客流预测\\outdata\\SZT\\out\\"
+  private val datapath = "I:\\Kim1023\\客流预测\\outdata\\SZT\\"
+  private val outpath = "I:\\Kim1023\\客流预测\\outdata\\SZT\\out\\"
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder().master("local[*]").getOrCreate()
     val sc = spark.sparkContext

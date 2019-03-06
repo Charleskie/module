@@ -8,9 +8,9 @@ import org.apache.hadoop.mapred.TextInputFormat
 import org.apache.spark.rdd.RDD
 
 object CalSizeFlow{
-  val path = ""
-  val dateArr = Array("20181115","20181116","20181117","20181118","20181119","20181120","20181121")
-  val outpath = "Kim/data/Szt/"
+  private val path = ""
+  private val dateArr = Array("20181115","20181116","20181117","20181118","20181119","20181120","20181121")
+  private val outpath = "Kim/data/Szt/"
   def main(args: Array[String]): Unit = {
     val sparkSession = SparkSession.builder().master("local[*]").getOrCreate()
     val sc = sparkSession.sparkContext

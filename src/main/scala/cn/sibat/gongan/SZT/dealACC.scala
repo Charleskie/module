@@ -7,7 +7,7 @@ import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.TextInputFormat
 
 object dealACC {
-  val path = "C:\\Users\\小怪兽\\Desktop\\gongan5minInOut\\20180915-0930InOut.csv"
+  private val path = "C:\\Users\\小怪兽\\Desktop\\gongan5minInOut\\20180915-0930InOut.csv"
   def main(args: Array[String]): Unit = {
     val sparkSession = SparkSession.builder().master("local[*]").getOrCreate()
     val sc = sparkSession.sparkContext

@@ -216,6 +216,8 @@ object earlywarning{
     })
   }
 
+
+
   case class earlywarning(id: String, device_id: String, device_type:String, device_address:String, data_sources:String ,
                           keyperson_id:String ,keyperson_state:String,keyperson_type:String ,event_address_id:String ,
                           event_address_name:String ,event_status:String ,compare_sources:String ,create_time:String ,

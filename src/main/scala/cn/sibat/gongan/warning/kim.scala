@@ -1,17 +1,12 @@
+package cn.sibat.gongan.warning
 
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Calendar
-
-import org.apache.spark.sql.catalyst.expressions.UnixTimestamp
 import org.apache.spark.sql.functions.udf
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions.col
 import java.util.Properties
 import java.util.Date
-
-import org.apache.spark.SparkContext
-
 import scala.collection.mutable.ArrayBuffer
 
 object kim {

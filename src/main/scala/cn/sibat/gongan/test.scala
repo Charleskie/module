@@ -18,5 +18,8 @@ object test{
 
     val a = null
     val b = 1.0
+    val num = 2
+    val num2 = 10
+    println(num.toString,num2.toString)
   }
 }

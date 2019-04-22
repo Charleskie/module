@@ -110,9 +110,24 @@ object dataprocess {
         val day = time.substring(0,10)
         (time,flow,weekField,day)
       }).filter(_._3=="weekend").filter(s => days.contains(s._4))
-      .sortBy(_._1).coalesce(1).saveAsTextFile(outpath+"festival")
+//      .sortBy(_._1).coalesce(1).saveAsTextFile(outpath+"festival")
     import sparkSession.implicits._
 //    workdaydata.map(_._4).distinct().sortBy(s => s).toDF().show(200)
+
+    val festivaldata = sc.textFile(path+"20190101").filter(s => s.split(","){0}.substring(11,19)>"07:00:00")
+      .filter(s => s.split(","){0}.substring(11,19)<="23:00:00")
+      .filter(s => s.split(","){0}.substring(0,10)=="2019-01-01")
+      .filter(s => s.split(","){1}=="世界之窗")
+      .map(s =>{
+        val line = s.split(",")
+        val time = line(0)
+        val station_name = line(1)
+        val flow = line(2)
+        val weekField = isWeekend(time,"yyyy-MM-dd HH:mm:ss")
+        val day = time.substring(0,10)
+        (time,flow,weekField,day)
+      })
+      .sortBy(_._1).coalesce(1).saveAsTextFile(outpath+"festival")
   }
 
   /***
